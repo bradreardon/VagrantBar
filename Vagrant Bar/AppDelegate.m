@@ -16,7 +16,9 @@
     
     if ( ![self detectVagrantPath] ) {
         
-        NSAlert * alert = [NSAlert alertWithMessageText:@"Vagrant Bar" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"Error: Unable to detect path to vagrant\n\nInstall from: http://www.vagrantup.com/\n"];
+        NSAlert * alert = [[NSAlert alloc] init];
+        [alert setMessageText:@"Vagrant Bar"];
+        [alert setInformativeText:@"Error: Unable to detect path to vagrant\n\nInstall from: http://www.vagrantup.com/\n"];
         [alert runModal];
         
         [[NSApplication sharedApplication] terminate:self];
@@ -26,7 +28,9 @@
     
     if ( ![self verifyVagrantVersion] ) {
         
-        NSAlert * alert = [NSAlert alertWithMessageText:@"Vagrant Bar" defaultButton:@"OK" alternateButton:nil otherButton:nil informativeTextWithFormat:@"Error: Vagrant version 1.6+ is required\n\nUpgrade from: http://www.vagrantup.com/\n"];
+        NSAlert * alert = [[NSAlert alloc] init];
+        [alert setMessageText:@"Vagrant Bar"];
+        [alert setInformativeText:@"Error: Vagrant version 1.6+ is required\n\nUpgrade from: http://www.vagrantup.com/\n"];
         [alert runModal];
         
         [[NSApplication sharedApplication] terminate:self];
@@ -60,42 +64,6 @@
     
 }
 
-- (NSImage *) statusItemImage:(int)number {
-    
-    NSUserDefaults * defaults = [NSUserDefaults standardUserDefaults];
-    NSString * imageName = @"18";
-    if ( [defaults boolForKey:@"monoIcon"] ) {
-        imageName = @"18_mono";
-    }
-    NSImage * image = [NSImage imageNamed:imageName];
-    
-    if ( [self willDisplayRunningMachines] ) {
-        
-        NSImage * canvas = [[NSImage alloc] initWithSize:
-                            NSMakeSize( image.size.width + 15, image.size.height )];
-        [canvas lockFocus];
-        
-        [image drawAtPoint:NSZeroPoint
-                  fromRect:NSMakeRect( 0, 0, image.size.width, image.size.height )
-                 operation:NSCompositeCopy
-                  fraction:1];
-        
-        NSString * string = number < 0 ? @"…" : [NSString stringWithFormat:@"%d", number];
-        [string drawAtPoint:NSMakePoint( image.size.width + 5, .5 )
-           withAttributes:@{
-                            NSForegroundColorAttributeName : [NSColor blackColor],
-                            NSFontAttributeName : [NSFont systemFontOfSize:13]
-                            }];
-        
-        [canvas unlockFocus];
-        return canvas;
-            
-    }
-    
-    return image;
-
-}
-
 - (void) setupStatusBarItem {
     
     NSMenu * menu = [[NSMenu alloc] init];
@@ -103,10 +71,14 @@
     
     NSStatusBar * bar = [NSStatusBar systemStatusBar];
     NSStatusItem * item = [bar statusItemWithLength:NSVariableStatusItemLength];
-    item.highlightMode = YES;
-    item.menu = menu;
     
-    item.image = [self statusItemImage:-1];
+    NSImage * icon = [NSImage imageNamed:@"18"];
+    [icon setTemplate:YES];
+    [item setImage:icon];
+    
+    [item setHighlightMode:YES];
+    [item setMenu:menu];
+    
     item.toolTip = [NSString stringWithFormat:@"Vagrant Bar v%@",
                     [[NSBundle mainBundle] objectForInfoDictionaryKey:@"CFBundleShortVersionString"]];
     
@@ -610,7 +582,7 @@
 
 - (void) checkForUpdate {
     
-    NSURL * url = [NSURL URLWithString:@"https://api.github.com/repos/BipSync/VagrantBar/tags"];
+    NSURL * url = [NSURL URLWithString:@"https://api.github.com/repos/bradreardon/VagrantBar/tags"];
     NSURLSession * session = [NSURLSession sharedSession];
     NSURLSessionDownloadTask * task =
     [session downloadTaskWithURL:url
@@ -659,7 +631,7 @@
     
     if ( notification.subtitle ) {
         [[NSWorkspace sharedWorkspace] openURL:
-         [NSURL URLWithString:@"https://github.com/BipSync/VagrantBar/releases"]];
+         [NSURL URLWithString:@"https://github.com/bradreardon/VagrantBar/releases"]];
     }
     
 }
@@ -683,7 +655,7 @@
 
 - (void) updateStatusItemImage:(int)numberOfRunningMachines {
 
-    self.statusItem.image = [self statusItemImage:numberOfRunningMachines];
+    [self.statusItem setTitle:[@(numberOfRunningMachines) stringValue]];
     
 }
 
