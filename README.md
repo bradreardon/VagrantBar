@@ -4,7 +4,7 @@
 
 Vagrant Bar is a simple wrapper to the Vagrant command line tool to manage machines registered with Vagrant - supporting ALL providers
 
-![Screenshot](https://raw.githubusercontent.com/BipSync/VagrantBar/master/Screenshot.png)
+![Screenshot](https://raw.githubusercontent.com/bradreardon/VagrantBar/master/Screenshot.png)
 
 ## Requirements
 
@@ -14,11 +14,12 @@ Vagrant Bar is a simple wrapper to the Vagrant command line tool to manage machi
 
 ## Download
 
-https://github.com/BipSync/VagrantBar/releases/download/1.13/Vagrant.Bar.zip
+https://github.com/bradreardon/VagrantBar/releases/download/2.0/Vagrant.Bar.zip
 
 
 Version History|Notes
 ----|----
+2.0 | New menu bar icon to accomodate Yosemite icon tinting
 1.13 | Fix for issue https://github.com/BipSync/VagrantBar/issues/6
 1.12 | Improvements from YungSang!
 1.11 | Fix bug with out-of-date machine statuses
@@ -42,7 +43,6 @@ Version History|Notes
 
 Value|Command
 ---|---
-Mono status bar icon|`defaults write bipsync.Vagrant-Bar monoIcon -bool true`
 Use a different Terminal|`defaults write bipsync.Vagrant-Bar terminalAppName -string TERMINALAPPNAME`
 Disable update checking|`defaults write bipsync.Vagrant-Bar checkForUpdates -bool false`
 Disable displaying number of running machines|`defaults write bipsync.Vagrant-Bar displayRunningMachines -bool false`
